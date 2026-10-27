@@ -1,0 +1,25 @@
+name: Native creation checks
+on:
+  workflow_dispatch:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  frame:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 tools/fetch_sdk.py
+      - run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libegl1-mesa-dev libgles2-mesa-dev libcairo2-dev libjson-c-dev qt6-base-dev qt6-webengine-dev libpulse-dev
+      - uses: actions/checkout@v4
+        with:
+          repository: ValveSoftware/openvr
+          ref: 0924064316de3effbcd1acf1e309182a2deb1c05
+          path: vendor/openvr
+      - run: ./build.sh
+        env:
+          OPENVR_LIB_DIR: ${{ github.workspace }}/vendor/openvr/bin/linuxarm64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: native-review-build
+          path: build/package
