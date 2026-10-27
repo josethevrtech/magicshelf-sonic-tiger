@@ -1,0 +1,88 @@
+{
+  "default_bindings": [
+    {
+      "controller_type": "frame_controller",
+      "binding_url": "bindings_frame_controller.json"
+    }
+  ],
+  "actions": [
+    {
+      "name": "/actions/sonic/in/scroll",
+      "type": "vector2",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/click",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/back",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/friendship",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/settings",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/home",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/left",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/right",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/up",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/down",
+      "type": "boolean",
+      "requirement": "optional"
+    },
+    {
+      "name": "/actions/sonic/in/grip",
+      "type": "boolean",
+      "requirement": "optional"
+    }
+  ],
+  "action_sets": [
+    {
+      "name": "/actions/sonic",
+      "usage": "leftright"
+    }
+  ],
+  "localization": [
+    {
+      "language_tag": "en_US",
+      "/actions/sonic": "Sonic Tiger LCD",
+      "/actions/sonic/in/scroll": "Left stick: navigation; holding stick: distance",
+      "/actions/sonic/in/click": "A / Spin / Select",
+      "/actions/sonic/in/back": "B / Pause / Back",
+      "/actions/sonic/in/friendship": "X / Power on / Start",
+      "/actions/sonic/in/settings": "Y / Settings",
+      "/actions/sonic/in/home": "Return to shelf",
+      "/actions/sonic/in/left": "D-pad left",
+      "/actions/sonic/in/right": "D-pad right",
+      "/actions/sonic/in/up": "D-pad up",
+      "/actions/sonic/in/down": "D-pad down",
+      "/actions/sonic/in/grip": "Hold grip to pick up; release to place"
+    }
+  ]
+}

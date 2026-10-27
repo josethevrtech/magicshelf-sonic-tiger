@@ -1,0 +1,10 @@
+build/
+dist/
+vendor/
+__pycache__/
+*.pyc
+
+local/
+
+core
+core.*
