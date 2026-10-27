@@ -26,6 +26,9 @@ c++ "${flags[@]}" -DSONIC_ARCHIVE_PLAYER=1 src/main.cpp -o build/package/bin/cre
 cp "$vr/libopenvr_api.so" build/package/lib/
 cp assets/device.mesh assets/body-0.rgba assets/model-info.json build/package/assets/
 cp -r assets/input build/package/assets/
+mkdir -p build/package/media
+cp media/sonic-tiger-*.png build/package/media/
+cp assets/model-license.txt build/package/MODEL-LICENSE.txt
 cp LICENSE SDK-LICENSE.txt OPENVR-LICENSE.txt ASSET_CREDITS.md THIRD_PARTY_NOTICES.md README.md FIDELITY.md build/package/
 printf '#!/bin/sh\nexec "$(dirname "$0")/creation" "$@"\n' > build/package/bin/control
 chmod +x build/package/bin/control

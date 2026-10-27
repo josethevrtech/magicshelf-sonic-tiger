@@ -1,0 +1,8 @@
+{
+  "packages": [
+    "qt6-base 6.10.2-1",
+    "qt6-webengine 6.10.2-1",
+    "glibc 2.43+r5+g856c426a7534-1"
+  ],
+  "missing_libraries": false
+}

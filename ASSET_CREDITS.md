@@ -9,3 +9,5 @@ CPU: LCD-Game-Emulator by bzhxx, pinned in emulator.lock.json; SM5xx implementat
 User-supplied n71.program, n71.melody, tsonic.svg and generated segment images are private local content, excluded from public commits and release packages. Sega/Tiger game material is not relicensed by this project.
 
 Online backend (0.2.0): Internet Archive hosted Emularity/MAME, https://archive.org/details/hh_tsonic and https://archive.org/embed/hh_tsonic. Emularity source: https://github.com/db48x/emularity (GPL-3.0). The official embed fetches player/emulator/game content; none is packaged here. The retained bzhxx native backend is a development reference, not the online executable. Qt WebEngine is dynamically linked; Chromium remains sandboxed.
+
+The model page now links Mattyew's profile at https://sketchfab.com/mattyu. The author name, original supplied profile URL and canonical model source above are retained. The source page and CC BY 4.0 license were checked during release preparation. Full model attribution/modification notes also accompany screenshots in media/README.md and PNG metadata.

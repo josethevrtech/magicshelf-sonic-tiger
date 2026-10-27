@@ -1,0 +1,45 @@
+{
+  "version": "0.2.3",
+  "architecture": "aarch64",
+  "package": "sonic-tiger-0.2.3-linux-aarch64.magicshelf",
+  "package_sha256": "6b7a370f8cf0145077a91ad8f51fe9060b2e7407c45eb95864582785e8c9f9f4",
+  "package_bytes": 2917706,
+  "package_files": 21,
+  "screenshots": [
+    {
+      "file": "sonic-tiger-gameplay.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "dde98b37f08e740b4af66b9673d836c9e9132c681796c1d0f80e24b0dd03f783"
+    },
+    {
+      "file": "sonic-tiger-settings.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "a79d105936ec29eff3e66d4181bd886330444f58fda31a1c7e185a506b5a7513"
+    },
+    {
+      "file": "sonic-tiger-back.png",
+      "size": [
+        1024,
+        1024
+      ],
+      "sha256": "13943001cc14d051db6ea29d82120777bcb379ef73ee3f492fb12fe81860389e"
+    }
+  ],
+  "manifest_and_catalog_valid": true,
+  "no_rom_or_private_content": true,
+  "packaged_images_match_release_assets": true,
+  "framework_patch_base": {
+    "repository": "josethevrtech/magicshelf",
+    "revision": "09deff08ce9731a55afe24d5cbbbb238e68a758f",
+    "catalog_blob": "e099601655a271faa63d0f561a68efc17294bbd3",
+    "collections_blob": "38265d13dcaeb6b5e3f459ae0d09f4b0cb78c476"
+  },
+  "publication_state": "prepared locally; repository, release and catalog not published",
+  "physical_validation": "User confirmed 3D ON/START, visible handheld and native audio. Remaining individual controls and shake/snap need full headset confirmation."
+}

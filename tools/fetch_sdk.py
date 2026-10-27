@@ -1,10 +1,13 @@
 #!/usr/bin/env python3
 import json,pathlib,re,subprocess
+from verify_source_export import verify_export
 root=pathlib.Path(__file__).resolve().parents[1]
 lock=json.loads((root/'sdk.lock.json').read_text())
 if lock['repository']!='https://github.com/josethevrtech/magicshelf.git' or not re.fullmatch(r'[0-9a-f]{40}',lock['revision']):
     raise SystemExit('Invalid SDK pin')
 target=root/'vendor/magicshelf'
+if verify_export(target,lock):
+    print('Using bundled SDK source export',lock['revision']);raise SystemExit(0)
 if target.exists():
     actual=subprocess.check_output(['git','-C',str(target),'rev-parse','HEAD'],text=True).strip()
     dirty=subprocess.check_output(['git','-C',str(target),'status','--porcelain'],text=True).strip()

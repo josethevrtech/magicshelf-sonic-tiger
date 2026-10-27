@@ -1,0 +1,23 @@
+[
+  {
+    "file": "sonic-tiger-back.png",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 414773,
+    "sha256": "13943001cc14d051db6ea29d82120777bcb379ef73ee3f492fb12fe81860389e"
+  },
+  {
+    "file": "sonic-tiger-gameplay.png",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 661210,
+    "sha256": "dde98b37f08e740b4af66b9673d836c9e9132c681796c1d0f80e24b0dd03f783"
+  },
+  {
+    "file": "sonic-tiger-settings.png",
+    "width": 1024,
+    "height": 1024,
+    "bytes": 574730,
+    "sha256": "a79d105936ec29eff3e66d4181bd886330444f58fda31a1c7e185a506b5a7513"
+  }
+]
