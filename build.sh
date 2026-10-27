@@ -16,12 +16,14 @@ gcc "${cflags[@]}" -c src/chip_host.c -o build/obj/chip_host.o
 flags=(-O2 -std=c++17 -fPIC -pthread -DQT_NO_KEYWORDS -Isrc -I"$sdk/native/compat" -I"$sdk/native" -I"$core/gw_sys" -I"$core/cpus" '-DMAGICSHELF_CREATION_PROFILE="creation_profile.h"')
 c++ "${flags[@]}" tests/model_buttons_test.cpp -o build/tests/model_buttons_test $(pkg-config --cflags --libs egl glesv2 cairo)
 build/tests/model_buttons_test
+c++ -O2 -std=c++17 -fPIC -Isrc tests/player_policy_test.cpp -o build/tests/player_policy_test $(pkg-config --cflags --libs Qt6Core)
+build/tests/player_policy_test
 if [[ -f tests/emulator_test.cpp ]]; then
  c++ "${flags[@]}" tests/emulator_test.cpp build/obj/*.o -o build/tests/emulator_test $(pkg-config --cflags --libs Qt6Widgets egl glesv2 cairo libpulse-simple)
  SONIC_NO_AUDIO=1 SONIC_CONTENT_DIR="$PWD/local/content" build/tests/emulator_test
 fi
 if [[ "${1:-}" == "--tests-only" ]]; then exit 0; fi
-c++ -O2 -std=c++17 -fPIC -pthread -Isrc src/archive_player.cpp -o build/package/bin/archive-player $(pkg-config --cflags --libs Qt6WebEngineWidgets)
+c++ -O2 -std=c++17 -fPIC -pthread -Isrc src/pexy_player.cpp -o build/package/bin/archive-player $(pkg-config --cflags --libs Qt6WebEngineWidgets)
 c++ "${flags[@]}" -DSONIC_ARCHIVE_PLAYER=1 src/main.cpp -o build/package/bin/creation -L"$vr" -lopenvr_api '-Wl,-rpath,$ORIGIN/../lib' $(pkg-config --cflags --libs Qt6Widgets egl glesv2 cairo json-c libpulse-simple)
 cp "$vr/libopenvr_api.so" build/package/lib/
 cp assets/device.mesh assets/body-0.rgba assets/model-info.json build/package/assets/

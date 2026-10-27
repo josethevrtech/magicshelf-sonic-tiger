@@ -45,7 +45,7 @@ class Emulator {
     }else if(!state.loaded&&b=="enter"){shared->reload.fetch_add(1);}
     else {pulses|=mask(b);pulseTicks=10;}
    }
-   auto status=shared->status.load();state.loaded=status==1;state.error=status==2?"Cannot reach Archive.org. A: retry":"Connecting to Internet Archive...";
+   auto status=shared->status.load();state.loaded=status==1;state.error=status==2?"Cannot reach Sonic 2 player. A: retry":"Connecting to Sonic 2...";
    unsigned tap=modelTaps.exchange(0);if(tap){latchedModel=tap;modelTicks=12;}
    unsigned input=state.menu?0:(buttons.load()|modelButtons.load()|pulses|latchedModel);
    if(modelTicks>0&&!--modelTicks)latchedModel=0;
@@ -86,8 +86,8 @@ public:
  void modelUp(){modelButtons=0;}
  void drawLCD(Canvas& canvas){
   auto frame=snapshot();
-  if(frame->menu){canvas.fill(.06,.12,.17);canvas.text(30,55,"SONIC / INTERNET ARCHIVE",30);std::string items[]={"Resume game",std::string("Sound: ")+(frame->mute?"off":"on"),"Volume: "+std::to_string(frame->volume)+"%","Reload online player"};for(int i=0;i<4;i++){if(i==frame->selection)canvas.rect(20,85+i*68,718,56,.12,.28,.37);canvas.text(40,123+i*68,items[i],27);}canvas.text(30,420,"Arrows choose / A select / B return",22);canvas.text(30,465,"Archive.org player / internet required",20);canvas.text(30,505,"Model: Mattyew / CC BY 4.0 (Sonic 2 casing)",18);return;}
-  if(!frame->loaded){canvas.fill(.06,.12,.17);canvas.text(30,80,"SONIC THE HEDGEHOG",34);canvas.text(30,155,frame->error,25);canvas.text(30,230,"Online player - no ROM import",25);canvas.text(30,300,"X or ON/START: start / A: spin",24);canvas.text(30,375,"Y: settings and retry",24);canvas.text(30,485,"Hosted by Internet Archive / archive.org",20);return;}
+  if(frame->menu){canvas.fill(.06,.12,.17);canvas.text(30,55,"SONIC 2 / PEXY",30);std::string items[]={"Resume game",std::string("Sound: ")+(frame->mute?"off":"on"),"Volume: "+std::to_string(frame->volume)+"%","Reload online player"};for(int i=0;i<4;i++){if(i==frame->selection)canvas.rect(20,85+i*68,718,56,.12,.28,.37);canvas.text(40,123+i*68,items[i],27);}canvas.text(30,420,"Arrows choose / A select / B return",22);canvas.text(30,465,"PEXY player / internet required",20);canvas.text(30,505,"Model: Mattyew / CC BY 4.0 (Sonic 2 casing)",18);return;}
+  if(!frame->loaded){canvas.fill(.06,.12,.17);canvas.text(30,80,"SONIC THE HEDGEHOG 2",34);canvas.text(30,155,frame->error,25);canvas.text(30,230,"Online player - no ROM import",25);canvas.text(30,300,"X or ON/START: start / A: action",24);canvas.text(30,375,"Y: settings and retry",24);canvas.text(30,485,"Hosted by PEXY / pexy.io",20);return;}
   auto* shared=mapping->shared;auto seq=shared->frameSequence.load(std::memory_order_acquire);
   if(seq&&seq!=lastFrame&&!(seq&1)){
    std::vector<unsigned char> candidate(pixels.size());memcpy(candidate.data(),shared->pixels,candidate.size());

@@ -9,7 +9,7 @@ for p in sorted((r/'media').glob('sonic-tiger-*.png')):
  fields={'Title':p.stem.replace('-',' ').title(),'Software':'MagicShelf Sonic Tiger LCD native renderer',
  'Attribution':f'Tiger Handheld Games Console by Mattyew, {source}, CC BY 4.0. Modified: mesh conversion, scale, textures and live screen.',
  'License':'Model: https://creativecommons.org/licenses/by/4.0/ . Game, characters and artwork retain their original rights.',
- 'Game source':'https://archive.org/details/hh_tsonic'}
+ 'Game source':'https://pexy.io/game/sonic-the-hedgehog-2-tiger-handheld/'}
  for k,v in fields.items():meta.add_text(k,v)
  im.save(p,pnginfo=meta,optimize=True)
  assert Image.open(p).convert('RGBA').tobytes()==before
@@ -17,10 +17,10 @@ for p in sorted((r/'media').glob('sonic-tiger-*.png')):
 (r/'media/screenshots.json').write_text(json.dumps(proof,indent=2)+'\n')
 (r/'media/README.md').write_text('''# Screenshots and attribution
 
-These captures use the real MagicShelf renderer and supplied Mattyew mesh. Gameplay pixels came from the actual Archive.org MAME player captured on Steam Frame during an isolated test. The recorded complete player frame was rendered through the same native screen-texture path. Settings are the actual creation settings UI in an isolated temporary profile. The back view shows the supplied geometry as-is. A neutral background was added; game scores and artwork were not invented. No AI-generated imagery is used.
+These captures use the real MagicShelf renderer and supplied Mattyew mesh. Gameplay pixels came from the actual PEXY Sonic 2 MAME player captured on Steam Frame during an isolated test. The recorded complete player frame was rendered through the same native screen-texture path. Settings are the actual creation settings UI in an isolated temporary profile. The back view shows the supplied geometry as-is. A neutral background was added; game scores and artwork were not invented. No AI-generated imagery is used.
 
 Model: [Tiger Handheld Games Console]('''+source+''') by [Mattyew](https://sketchfab.com/mattyu), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). The original download credits the artist at https://sketchfab.com/mrgrandgrind; that supplied attribution is retained in ASSET_CREDITS.md. Modifications: mesh conversion, scale, material texture conversion and live screen replacement.
 
-Game/player: [Internet Archive Sonic handheld](https://archive.org/details/hh_tsonic). Sega/Tiger game material retains its original rights. The model's CC license does not relicense the game imagery. Each PNG also contains attribution/source metadata. See screenshots.json for dimensions and checksums.
+Game/player: [PEXY Sonic 2 handheld](https://pexy.io/game/sonic-the-hedgehog-2-tiger-handheld/). Sega/Tiger game material retains its original rights. The model's CC license does not relicense the game imagery. Each PNG also contains attribution/source metadata. See screenshots.json for dimensions and checksums.
 ''')
 print(json.dumps(proof,indent=2))

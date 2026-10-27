@@ -19,7 +19,7 @@ inline constexpr ModelButton ModelButtonTargets[]={
  // Sonic 1's one Super Sonic Spin input; Action duplicates its Jump Up input.
  {"attack-left","enter",.0432f,-.0225889f,.00988f,.0049f,.0036f},
  {"attack-right","enter",.0527f,-.0225889f,.00988f,.0049f,.0036f},
- {"action","top",.0481651f,-.0332534f,.00948f,.0101f,.0037f}
+ {"action","enter",.0481651f,-.0332534f,.00948f,.0101f,.0037f}
 };
 inline bool insideButton(const ModelButton& button,V p){
  return std::abs(p[0]-button.x)<=button.hx&&std::abs(p[1]-button.y)<=button.hy;

@@ -10,6 +10,7 @@ constexpr int ArchiveWidth=758,ArchiveHeight=540;
 struct ArchiveShared {
  std::atomic<uint32_t> frameSequence{0},frames{0},status{0},keys{0},reload{0},gain{28},audible{0},quit{0};
  std::atomic<uint32_t> deliveredKeys{0},deliveredEvents{0};
+ std::atomic<uint32_t> verifiedDriver{0},saved{0},restored{0},saveAck{0},blockedRequests{0},observedKeys{0};
  uint8_t pixels[ArchiveWidth*ArchiveHeight*4]{};
 };
 struct ArchiveMapping {

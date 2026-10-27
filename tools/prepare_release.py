@@ -46,9 +46,11 @@ base=release/'framework-base';patch=[]
 for name in ['catalog.json','collections.json']:
  before=(base/name).read_text();data=json.loads(before)
  if name=='catalog.json':
-  assert not any(m['id']==meta['id'] for m in data['modules']);data['modules'].append(entry);catalog(data)
+  data['modules']=[entry if m['id']==meta['id'] else m for m in data['modules']]
+  if not any(m['id']==meta['id'] for m in data['modules']):data['modules'].append(entry)
+  catalog(data)
  else:
-  assert collection not in data['catalogs'];data['catalogs'].append(collection)
+  if collection not in data['catalogs']:data['catalogs'].append(collection)
  after=json.dumps(data,indent=2)+'\n'
  patch.extend(difflib.unified_diff(before.splitlines(True),after.splitlines(True),fromfile='a/'+name,tofile='b/'+name))
 (release/'magicshelf-catalog.patch').write_text(''.join(patch))

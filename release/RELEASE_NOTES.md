@@ -1,16 +1,13 @@
-# Sonic Tiger LCD v0.2.3
+# Sonic Tiger LCD v0.3.0
 
-Play Sonic the Hedgehog through Internet Archive's online player inside a 3D Tiger handheld on Steam Frame. Free, with no ROM import. Internet is required to load the player.
+The handheld now runs Sonic the Hedgehog 2 through [PEXY](https://pexy.io/game/sonic-the-hedgehog-2-tiger-handheld/), matching its Sonic 2 casing. Internet required; no ROM import.
 
-- Pick up the handheld, place it nearby, or return it to MagicShelf.
-- Use Frame controls or point at the model's buttons and hold the trigger.
-- Adjust sound and volume, or reload the online player, in the creation's settings.
-- Includes gameplay/settings/back screenshots, linked credits, model attribution and license notices.
+- Verifies the actual MAME tsonic2 machine before showing gameplay.
+- Remaps Start, Pause, Sound, Off, ACL and Action to the new player's inputs. Both ATTACK halves and ACTION share the game's Action input.
+- Saves locally before Off/reload and restores compatible browser saves.
+- Keeps X to start, grip pickup/placement, independent model/controller holds and 28 percent default volume.
+- Restricts browser requests, blocks downloads/popups and includes new real gameplay/settings/back screenshots.
 
-The supplied model is Mattyew's Sonic 2 casing; the hosted game is Sonic 1. Both ATTACK halves activate Spin; ACTION jumps. Online game state restarts when turned Off or reloaded; sound/volume settings persist. Archive.org loading times and availability can vary.
+Frame tests passed for machine identity, browser key press/release, save/restore, model target rays, short taps, combined holds, settings, offline errors and clean child exit. Remaining individual model controls and perceived audio level need headset review.
 
-Model: [Tiger Handheld Games Console](https://sketchfab.com/3d-models/tiger-handheld-games-console-20d9825be3b64e89b275ee062455691c) by [Mattyew](https://sketchfab.com/mattyu), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Converted/scaled mesh and textures; baked screen replaced with a live display and interactive controls.
-
-Player: [Internet Archive](https://archive.org/details/hh_tsonic), using [Emularity](https://github.com/db48x/emularity) and [MAME](https://www.mamedev.org/). Integration by josethevrtech; see ASSET_CREDITS.md and THIRD_PARTY_NOTICES.md for all contributors and licenses. Sega/Tiger game material retains its original rights. No ROM files are distributed.
-
-Target: Steam Frame ARM64, MagicShelf 0.3.21 or newer. Uses the SteamOS Qt WebEngine runtime. Browser work runs separately from the headset tracking loop. This is a fan-made integration, not an official Sega, Tiger Electronics or Internet Archive product.
+Model: [Tiger Handheld Games Console](https://sketchfab.com/3d-models/tiger-handheld-games-console-20d9825be3b64e89b275ee062455691c) by [Mattyew](https://sketchfab.com/mattyu), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Modified mesh, scale, textures, screen and button targets. Player: PEXY and [MAME contributors](https://github.com/mamedev/mame). Sega/Tiger game material retains its original rights. No game files are distributed. See ASSET_CREDITS.md and THIRD_PARTY_NOTICES.md.
