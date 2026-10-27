@@ -1,9 +1,9 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "architecture": "aarch64",
-  "package": "sonic-tiger-0.3.0-linux-aarch64.magicshelf",
-  "package_sha256": "1ff1dc9886ecb94228aa646b4c2048961f5749144fc7d1dec56612a36be6b6db",
-  "package_bytes": 2905965,
+  "package": "sonic-tiger-0.3.1-linux-aarch64.magicshelf",
+  "package_sha256": "3c9d947cb353779cb9e46340aaec7d563c5d4aa7afe5877a35f4b122a08bc2fd",
+  "package_bytes": 2906474,
   "package_files": 21,
   "screenshots": [
     {
@@ -36,7 +36,7 @@
   "packaged_images_match_release_assets": true,
   "framework_patch_base": {
     "repository": "josethevrtech/magicshelf",
-    "revision": "f71c93af0c6efaa7eafcfb1e9eff17424be1d435"
+    "revision": "6e874045bf0fcbf862851e25bbdb9f44129811a9"
   },
   "publication_state": "verified release artifacts; source and release are published independently of the framework catalog",
   "physical_validation": "User confirmed 3D ON/START, visible handheld and native audio. Remaining individual controls and shake/snap need full headset confirmation."

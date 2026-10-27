@@ -16,6 +16,8 @@ gcc "${cflags[@]}" -c src/chip_host.c -o build/obj/chip_host.o
 flags=(-O2 -std=c++17 -fPIC -pthread -DQT_NO_KEYWORDS -Isrc -I"$sdk/native/compat" -I"$sdk/native" -I"$core/gw_sys" -I"$core/cpus" '-DMAGICSHELF_CREATION_PROFILE="creation_profile.h"')
 c++ "${flags[@]}" tests/model_buttons_test.cpp -o build/tests/model_buttons_test $(pkg-config --cflags --libs egl glesv2 cairo)
 build/tests/model_buttons_test
+c++ "${flags[@]}" tests/shelf_fit_test.cpp -o build/tests/shelf_fit_test $(pkg-config --cflags --libs egl glesv2 cairo json-c)
+build/tests/shelf_fit_test
 c++ -O2 -std=c++17 -fPIC -Isrc tests/player_policy_test.cpp -o build/tests/player_policy_test $(pkg-config --cflags --libs Qt6Core)
 build/tests/player_policy_test
 if [[ -f tests/emulator_test.cpp ]]; then

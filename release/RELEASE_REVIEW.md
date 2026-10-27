@@ -1,13 +1,11 @@
-# Sonic Tiger LCD v0.3.0
+# Sonic Tiger LCD v0.3.1
 
-The handheld now runs Sonic the Hedgehog 2 through [PEXY](https://pexy.io/game/sonic-the-hedgehog-2-tiger-handheld/), matching its Sonic 2 casing. Internet required; no ROM import.
+The docked handheld now fits its shelf slot, preventing its wide casing from overlapping the Android phone at the default spacing. The fit uses the converted mesh bounds and leaves a scaled 10 mm slot margin. Pickup restores the user-selected size.
 
-- Verifies the actual MAME tsonic2 machine before showing gameplay.
-- Remaps Start, Pause, Sound, Off, ACL and Action to the new player's inputs. Both ATTACK halves and ACTION share the game's Action input.
-- Saves locally before Off/reload and restores compatible browser saves.
-- Keeps X to start, grip pickup/placement, independent model/controller holds and 28 percent default volume.
-- Restricts browser requests, blocks downloads/popups and includes new real gameplay/settings/back screenshots.
+Drawing, foot placement and button raycasts use the same fitted pose and scale. The larger transparent interaction canvas is retained so the model and grab handle stay visible. No shelf preferences or game saves are changed.
 
-Frame tests passed for machine identity, browser key press/release, save/restore, model target rays, short taps, combined holds, settings, offline errors and clean child exit. Remaining individual model controls and perceived audio level need headset review.
+Validation: 81 actual-mesh geometry cases cover 12/18/30 cm spacing, dashboard scales 0.6/1/1.8, normal/enlarged sizes and shelf lean. Tests verify foot alignment, a visible gap beside the measured Android phone, button-coordinate round trips and unchanged free-held size. Frame-native build and existing model/player-policy tests pass.
 
-Model: [Tiger Handheld Games Console](https://sketchfab.com/3d-models/tiger-handheld-games-console-20d9825be3b64e89b275ee062455691c) by [Mattyew](https://sketchfab.com/mattyu), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Modified mesh, scale, textures, screen and button targets. Player: PEXY and [MAME contributors](https://github.com/mamedev/mame). Sega/Tiger game material retains its original rights. No game files are distributed. See ASSET_CREDITS.md and THIRD_PARTY_NOTICES.md.
+The Sonic 2 online player, controls, saves and 28 percent default volume are unchanged. Internet required; no ROM import.
+
+Model: [Tiger Handheld Games Console](https://sketchfab.com/3d-models/tiger-handheld-games-console-20d9825be3b64e89b275ee062455691c) by [Mattyew](https://sketchfab.com/mattyu), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Mesh, scale, textures, screen and button targets modified. [PEXY Sonic 2 player](https://pexy.io/game/sonic-the-hedgehog-2-tiger-handheld/) uses [MAME](https://github.com/mamedev/mame). Original game/artwork retains its respective rights; none is bundled.

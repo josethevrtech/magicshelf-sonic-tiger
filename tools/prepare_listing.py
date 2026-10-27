@@ -1,6 +1,6 @@
 from pathlib import Path
 import json
-r=Path(__file__).resolve().parents[1];p=r/'module.json';m=json.loads(p.read_text());version='0.3.0';repo='https://github.com/josethevrtech/magicshelf-sonic-tiger';source='https://sketchfab.com/3d-models/tiger-handheld-games-console-20d9825be3b64e89b275ee062455691c'
+r=Path(__file__).resolve().parents[1];p=r/'module.json';m=json.loads(p.read_text());version='0.3.1';repo='https://github.com/josethevrtech/magicshelf-sonic-tiger';source='https://sketchfab.com/3d-models/tiger-handheld-games-console-20d9825be3b64e89b275ee062455691c'
 m.update(version=version,price=0,category='Games',tagline='Pick it up. Play Sonic.',minimum_framework_version='0.3.21',startup_timeout_sec=30,
  description='Play Sonic the Hedgehog 2 from PEXY inside a 3D Tiger handheld on Steam Frame. Internet required. No ROM import.',
  about='''SONIC ON YOUR SHELF
@@ -13,7 +13,7 @@ CONTROLS
 Directions: move and jump. A: Action. B: Pause. X: ON/START. Y: Settings. Point at the model buttons with your free hand and hold the trigger to hold a key. The two ATTACK halves and ACTION activate the same Action input. ACL resets the game.
 
 PICK UP AND PLACE
-Hold grip to pick up; release to place. The holding stick adjusts distance. Home or a deliberate shake returns it to the shelf.
+The handheld fits its shelf slot automatically. Hold grip to pick up at your chosen size; release to place. The holding stick adjusts distance. Home or a deliberate shake returns it to the shelf.
 
 SOUND AND CONNECTION
 Y opens sound, volume and Reload Online Player. The handheld plays its own sound cues, not a continuous soundtrack. If loading fails, use Retry. PEXY availability and loading times can vary.

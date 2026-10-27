@@ -6,6 +6,7 @@
 #include "magicshelf_sdk.h"
 #include "controls.h"
 #include "controller_nav.h"
+#include "shelf_fit.h"
 #include <QApplication>
 #include <QWidget>
 #include <QPainter>
@@ -122,6 +123,9 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
                 {"model_button",QString::fromStdString(modelButton)},{"model_button_presses",double(modelButtonPresses)}};
             status["model_pointer_clicks"]=double(modelPointerClicks);status["model_hover"]=QString::fromStdString(hoveredModelButton);
             status["model_hit_x"]=lastModelHit[0];status["model_hit_y"]=lastModelHit[1];
+            status["display_scale"]=lastSize;status["user_scale"]=size;
+            status["dock_spacing_m"]=dock.effective.spacing;
+            status["body_width_m"]=TigerSlotWidth*lastSize;
 #ifdef SONIC_ARCHIVE_PLAYER
             status["player_input_mask"]=int(game.deliveredKeys.load());status["player_input_events"]=int(game.deliveredEvents.load());
             status["player_ready"]=game.loaded();status["player_frames"]=double(game.ticks.load());status["audio_recently_audible"]=bool(game.audioPeak.load());
@@ -223,7 +227,8 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
         if(capture){renderer.showGrabHandle=false;renderer.draw(identity(),rotated(-.18f,.05f),{0,0,.3f},{0,0,.3f},.19f,1);renderer.save(data+"/capture.png");fs::remove(data+"/capture.request");}
         renderer.showGrabHandle=true;renderer.highlightGrabHandle=grab.active||overHandle;renderer.dockGrabHandle=candidate;
         if(poses[0].bPoseIsValid&&(docked?dock.available:placed)){
-            M model=docked?dock.model(size):world;float effective=docked?dock.size(size):size;
+            auto fitted=tigerPlacement(dock,size,docked,world);
+            M model=fitted.model;float effective=fitted.scale;
             V p=point(model,{0,0,ScreenZ*effective}),h=point(head,{0,0,0}),z=norm(sub(h,p)),x=norm(cross({0,1,0},z));M plane=pose(x,cross(z,x),z,p);float width=InteractionPlaneWidth*effective;
             if(dot(sub(h,p),sub(h,p))>.015f){
                 V eyes[2];for(int i=0;i<2;i++)eyes[i]=point(mm(head,fromvr(VRSystem()->GetEyeToHeadTransform((EVREye)i))),{0,0,0});renderer.draw(plane,model,eyes[0],eyes[1],width,effective,false);glFinish();Texture_t texture{(void*)(uintptr_t)renderer.tex,TextureType_OpenGL,ColorSpace_Gamma};check(ov->SetOverlayTexture(device,&texture));check(ov->SetOverlayWidthInMeters(device,width));auto transform=magicshelfTransform(plane);check(ov->SetOverlayTransformAbsolute(device,TrackingUniverseStanding,&transform));check(ov->ShowOverlay(device));lastPlane=plane;lastModel=model;lastSize=effective;lastWidth=width;

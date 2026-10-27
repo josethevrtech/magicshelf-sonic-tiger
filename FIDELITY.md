@@ -11,3 +11,5 @@ Model tests cover 12 measured targets from front/oblique rays, backside rejectio
 The prior version's 3D ON/START was physically confirmed by the user. Remaining individual buttons, perceived audio level and long-session performance require headset review. Automated key delivery does not establish physical usability of every printed button.
 
 The 2048 MiB process-tree budget covers the browser, MAME and VR renderer. Browser work remains separate from tracking. Retained native SM511 code is a development reference, not the shipped backend.
+
+Version 0.3.1 adds width-aware shelf fitting against the actual converted mesh bounds. The fitted pose and scale feed rendering and inverse raycasts together; free-held size is unchanged. The shelf_fit_test reads the actual mesh and checks 81 spacing/dashboard-scale/user-size/lean combinations, foot alignment and a gap beside the measured 79 x 175 mm Android phone mesh. Its radial bounds also fit inside the retained transparent interaction canvas.

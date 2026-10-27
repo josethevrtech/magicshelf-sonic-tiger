@@ -16,7 +16,7 @@ CONTROLS
 Directions: move and jump. A: Action. B: Pause. X: ON/START. Y: Settings. Point at the model buttons with your free hand and hold the trigger to hold a key. The two ATTACK halves and ACTION activate the same Action input. ACL resets the game.
 
 PICK UP AND PLACE
-Hold grip to pick up; release to place. The holding stick adjusts distance. Home or a deliberate shake returns it to the shelf.
+The handheld fits its shelf slot automatically. Hold grip to pick up at your chosen size; release to place. The holding stick adjusts distance. Home or a deliberate shake returns it to the shelf.
 
 SOUND AND CONNECTION
 Y opens sound, volume and Reload Online Player. The handheld plays its own sound cues, not a continuous soundtrack. If loading fails, use Retry. PEXY availability and loading times can vary.
