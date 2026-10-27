@@ -82,13 +82,15 @@ class Emulator {
      float value=sonic_audio[i];filteredAudio=value-previousAudio+.995f*filteredAudio;previousAudio=value;
      samples[i]=state.mute||state.menu?0:std::clamp(filteredAudio*state.volume/100,-32767.f,32767.f);
     }
-    int error;if(pa_simple_write(audio,samples,sonic_audio_count*sizeof(short),&error)<0){pa_simple_free(audio);audio=nullptr;}
+    int peak=0;for(unsigned i=0;i<sonic_audio_count;i++)peak=std::max(peak,std::abs(int(samples[i])));
+    audioPeak=peak;audioSamples+=sonic_audio_count;
+    int error;if(pa_simple_write(audio,samples,sonic_audio_count*sizeof(short),&error)<0){std::cerr<<"Audio write failed: "<<error<<"\n";pa_simple_free(audio);audio=nullptr;audioConnected=false;}
    }
   }
   ++ticks;publish();
  }
  void run(){
-  if(imported&&!getenv("SONIC_NO_AUDIO")){pa_sample_spec spec{PA_SAMPLE_S16LE,32768,1};pa_buffer_attr attr{uint32_t(-1),4096,uint32_t(-1),1024,uint32_t(-1)};int error;audio=pa_simple_new(nullptr,"Sonic Tiger LCD",PA_STREAM_PLAYBACK,nullptr,"Handheld speaker",&spec,nullptr,&attr,&error);}
+  if(imported&&!getenv("SONIC_NO_AUDIO")){pa_sample_spec spec{PA_SAMPLE_S16LE,32768,1};pa_buffer_attr attr{uint32_t(-1),4096,uint32_t(-1),1024,uint32_t(-1)};int error;audio=pa_simple_new(nullptr,"Sonic Tiger LCD",PA_STREAM_PLAYBACK,nullptr,"Handheld speaker",&spec,nullptr,&attr,&error);audioConnected=audio!=nullptr;if(!audio)std::cerr<<"Audio connection failed: "<<error<<"\n";}
   auto next=std::chrono::steady_clock::now(),saved=next;
   while(!stopping){tick();auto now=std::chrono::steady_clock::now();if(saveRequested.exchange(false)||now-saved>std::chrono::seconds(2)){persist();saved=now;}
    next+=std::chrono::nanoseconds(7812500);if(now-next>std::chrono::milliseconds(250))next=now;std::this_thread::sleep_until(next);}
@@ -96,6 +98,7 @@ class Emulator {
  }
 public:
  std::atomic<unsigned long> ticks{0};
+ std::atomic<bool> audioConnected{false};std::atomic<unsigned long> audioSamples{0};std::atomic<int> audioPeak{0};
  Emulator(QString package,QString directory):data(directory.toStdString()){
   (void)package;std::filesystem::create_directories(data);content=getenv("SONIC_CONTENT_DIR")?getenv("SONIC_CONTENT_DIR"):data+"/content";
   auto settings=QJsonDocument::fromJson(read(directory+"/settings.json")).object();state.mute=settings["mute"].toBool();state.volume=std::clamp(settings["volume"].toInt(40),0,100);

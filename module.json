@@ -2,7 +2,7 @@
   "schema_version": 1,
   "api_version": 2,
   "id": "sonic-tiger",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "Sonic Tiger LCD",
   "description": "Sonic the Hedgehog Tiger LCD handheld. Local ROM import required. Supplied model depicts Sonic 2.",
   "author": "josethevrtech",
@@ -13,6 +13,6 @@
   "permissions": [
     "vr-overlay"
   ],
-  "memory_mb": 256,
+  "memory_mb": 768,
   "control_entrypoint": "bin/control"
 }

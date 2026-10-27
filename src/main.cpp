@@ -108,7 +108,10 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
             game.save();lastSave=now;
             QJsonObject status{{"frame_ms",frameMs},{"peak_frame_ms",peakFrameMs},{"frame_count",double(frameCount)},
                 {"slow_frames",double(slowFrames)},{"frame_sync",frameSync},{"held",grab.active},{"docked",docked},
-                {"emulator_ticks",double(game.ticks.load())},{"rom_loaded",game.loaded()},{"controller_inputs",double(controllerInputs)}};
+                {"emulator_ticks",double(game.ticks.load())},{"rom_loaded",game.loaded()},{"controller_inputs",double(controllerInputs)},
+                {"headset_tracked",poses[0].bPoseIsValid},{"overlay_visible",ov->IsOverlayVisible(device)},
+                {"audio_connected",game.audioConnected.load()},{"audio_samples",double(game.audioSamples.load())},{"audio_peak",game.audioPeak.load()},
+                {"input_focused",nav.focusedNow},{"input_fallback",nav.usingFallback},{"input_pressed_mask",int(nav.pressedMask)}};
             std::ofstream f(data+"/runtime.json.next");f<<QJsonDocument(status).toJson().constData();f.close();
             if(f){std::error_code ec;fs::rename(data+"/runtime.json.next",data+"/runtime.json",ec);}
         }
