@@ -22,12 +22,12 @@ extern "C" {
 extern unsigned sonic_buttons,sonic_audio_count;
 extern short sonic_audio[2048];
 }
-struct SonicFrame {std::array<bool,256> segments{};bool menu=false,mute=false,loaded=false;int selection=0,volume=40;std::string error;};
+struct SonicFrame {std::array<bool,256> segments{};bool menu=false,mute=false,loaded=false;unsigned inputs=0;int selection=0,volume=40;std::string error;};
 class Emulator {
  struct Segment{int index,x,y;QImage image;};std::vector<Segment> art;
  std::string data,content;QByteArray program,melody;
  std::shared_ptr<const SonicFrame> latest=std::make_shared<SonicFrame>();
- std::atomic<unsigned> buttons{0},pulses{0};std::atomic<bool> stopping{false},saveRequested{false};
+ std::atomic<unsigned> buttons{0},modelButtons{0},pulses{0};std::atomic<bool> stopping{false},saveRequested{false};
  std::thread worker;bool imported=false;SonicFrame state;pa_simple* audio=nullptr;
  unsigned heldPulse=0;int pulseTicks=0;float previousAudio=0,filteredAudio=0;
  std::mutex commandMutex;std::vector<QString> commands;
@@ -51,7 +51,7 @@ class Emulator {
  void tick(){
   std::vector<QString> pending;{std::lock_guard<std::mutex> lock(commandMutex);pending.swap(commands);}
   for(auto& b:pending){
-   if(b=="menu"){state.menu=!state.menu;buttons=0;}
+   if(b=="menu"){state.menu=!state.menu;buttons=0;modelButtons=0;}
    else if(state.menu){
     if(b=="top")state.selection=(state.selection+3)%4;
     if(b=="bottom")state.selection=(state.selection+1)%4;
@@ -69,7 +69,8 @@ class Emulator {
   if(imported){
    unsigned pulse=pulses.exchange(0);
    if(pulse){heldPulse|=pulse;pulseTicks=8;}
-   sonic_buttons=state.menu?0:buttons.load()|heldPulse;
+   sonic_buttons=state.menu?0:buttons.load()|modelButtons.load()|heldPulse;
+   state.inputs=sonic_buttons;
    if(pulseTicks>0&&!--pulseTicks)heldPulse=0;
    sonic_audio_count=0;gw_system_run(256);
    for(int x=0;x<4;x++)for(int y=0;y<16;y++)for(int z=0;z<4;z++){
@@ -120,6 +121,8 @@ public:
  auto snapshot()const{return std::atomic_load(&latest);}
  void save(){saveRequested=true;}
  void setButtons(unsigned b){buttons=b;}
+ void modelDown(const QString& b){if(snapshot()->menu||b=="reset"){modelButtons=0;press(b);}else modelButtons=mask(b);}
+ void modelUp(){modelButtons=0;}
  void press(const QString& b){std::lock_guard<std::mutex> lock(commandMutex);if(commands.size()<64)commands.push_back(b);}
  void key(const QString& b,bool down){auto frame=snapshot();if(b=="menu"||frame->menu){if(down)press(b);return;}unsigned m=mask(b);if(down){if(b=="state"||b=="sound"||b=="power")press(b);else buttons.fetch_or(m);}else buttons.fetch_and(~m);}
  void drawLCD(Canvas& c){

@@ -2,17 +2,19 @@
   "schema_version": 1,
   "api_version": 2,
   "id": "sonic-tiger",
-  "version": "0.1.1",
+  "version": "0.2.2",
   "name": "Sonic Tiger LCD",
-  "description": "Sonic the Hedgehog Tiger LCD handheld. Local ROM import required. Supplied model depicts Sonic 2.",
+  "description": "Sonic handheld powered by the Internet Archive online player. Internet required; no ROM import. Supplied casing depicts Sonic 2.",
   "author": "josethevrtech",
   "license": "GPL-3.0-or-later; model CC-BY-4.0",
   "platform": "linux",
   "architecture": "aarch64",
   "entrypoint": "bin/creation",
   "permissions": [
-    "vr-overlay"
+    "vr-overlay",
+    "network",
+    "external-runtime"
   ],
-  "memory_mb": 768,
+  "memory_mb": 2048,
   "control_entrypoint": "bin/control"
 }

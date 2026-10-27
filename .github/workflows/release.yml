@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: python3 tools/fetch_sdk.py
-      - run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libegl1-mesa-dev libgles2-mesa-dev libcairo2-dev libjson-c-dev qt6-base-dev libpulse-dev
+      - run: sudo apt-get update && sudo apt-get install -y g++ pkg-config libegl1-mesa-dev libgles2-mesa-dev libcairo2-dev libjson-c-dev qt6-base-dev qt6-webengine-dev libpulse-dev
       - uses: actions/checkout@v4
         with:
           repository: ValveSoftware/openvr

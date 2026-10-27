@@ -1,4 +1,8 @@
+#ifdef SONIC_ARCHIVE_PLAYER
+#include "archive_emulator.h"
+#else
 #include "emulator.h"
+#endif
 #include "magicshelf_sdk.h"
 #include "controls.h"
 #include "controller_nav.h"
@@ -53,16 +57,16 @@ public:
         }if(!button.isEmpty()){game.key(button,true);update();}
     }
     void keyReleaseEvent(QKeyEvent* e)override{if(e->isAutoRepeat())return;QString b;switch(e->key()){case Qt::Key_Left:b="left";break;case Qt::Key_Right:b="right";break;case Qt::Key_Up:b="top";break;case Qt::Key_Down:b="bottom";break;case Qt::Key_Return:case Qt::Key_Enter:b="enter";break;case Qt::Key_Backspace:b="back";break;}if(!b.isEmpty())game.key(b,false);}
-    void focusOutEvent(QFocusEvent*)override{game.setButtons(0);}
+    void focusOutEvent(QFocusEvent*)override{game.setButtons(0);game.modelUp();}
     void mousePressEvent(QMouseEvent* e)override{
         int side=std::min(width(),height()-100);V eye{0,0,.3f};
         V target{float((e->position().x()-(width()-side)/2)/side-.5)*.19f,float(.5-(e->position().y()-20)/side)*.19f,0};
         M inv=inverse(rotated(yaw,pitch));V a=point(inv,eye),b=point(inv,target),d=sub(b,a);
-        auto button=buttonRay(a,d);if(!button.empty()){game.press(QString::fromStdString(button));game.save();return;}
+        auto button=buttonRay(a,d);if(!button.empty()){game.modelDown(QString::fromStdString(button));return;}
         dragging=true;drag=e->position().toPoint();
     }
     void mouseMoveEvent(QMouseEvent* e)override{if(dragging){auto delta=e->position().toPoint()-drag;drag=e->position().toPoint();yaw+=delta.x()*.012f;pitch=std::clamp(pitch+delta.y()*.012f,-1.2f,1.2f);update();}}
-    void mouseReleaseEvent(QMouseEvent*)override{dragging=false;}
+    void mouseReleaseEvent(QMouseEvent*)override{dragging=false;game.modelUp();}
 };
 
 static int runVR(Emulator& game,Renderer& renderer,const std::string& package,const std::string& data,int lock){
@@ -78,6 +82,9 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
     double frameMs=0,peakFrameMs=0;unsigned long frameCount=0,slowFrames=0,syncErrors=0;bool frameSync=false;
     unsigned long controllerInputs=0,depthMoves=0;
     bool gripHeld=false;bool repositioning=false,startupPlacement=true;auto placementStarted=now;
+    uint32_t modelButtonController=k_unTrackedDeviceIndexInvalid;std::string modelButton;
+    unsigned long modelButtonPresses=0,modelPointerClicks=0;std::string hoveredModelButton;V lastModelHit{};
+    auto clearModelButton=[&]{modelButtonController=k_unTrackedDeviceIndexInvalid;modelButton.clear();game.modelUp();};
     auto settings=data+"/placement.json";
     if(auto*j=json_object_from_file(settings.c_str())){
         json_object*v=nullptr;
@@ -87,7 +94,7 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
         json_object_put(j);
     }
     auto savePlacement=[&]{QJsonArray pose;for(float v:world)pose.append(v);QJsonObject j{{"size",size},{"docked",docked},{"pose",pose}};QSaveFile f(QString::fromStdString(settings));if(!f.open(QIODevice::WriteOnly))throw std::runtime_error("Cannot save placement");f.write(QJsonDocument(j).toJson());if(!f.commit())throw std::runtime_error("Cannot save placement");};
-    auto toDock=[&]{startupPlacement=true;placementStarted=std::chrono::steady_clock::now();showRequested=0;grab.end();shake.reset();nav.state.update({},0);gripHeld=false;docked=true;placed=false;candidate=false;savePlacement();};
+    auto toDock=[&]{clearModelButton();startupPlacement=true;placementStarted=std::chrono::steady_clock::now();showRequested=0;grab.end();shake.reset();nav.state.update({},0);gripHeld=false;docked=true;placed=false;candidate=false;savePlacement();};
     auto release=[&]{if(dock.canSnap(world,size,candidate))toDock();else{grab.end();shake.reset();candidate=false;savePlacement();}};
     while(running){
         now=std::chrono::steady_clock::now();float dt=std::chrono::duration<float>(now-last).count();last=now;frameMs=dt*1000;peakFrameMs=std::max(peakFrameMs,frameMs);++frameCount;if(frameMs>33.34)++slowFrames;
@@ -111,7 +118,15 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
                 {"emulator_ticks",double(game.ticks.load())},{"rom_loaded",game.loaded()},{"controller_inputs",double(controllerInputs)},
                 {"headset_tracked",poses[0].bPoseIsValid},{"overlay_visible",ov->IsOverlayVisible(device)},
                 {"audio_connected",game.audioConnected.load()},{"audio_samples",double(game.audioSamples.load())},{"audio_peak",game.audioPeak.load()},
-                {"input_focused",nav.focusedNow},{"input_fallback",nav.usingFallback},{"input_pressed_mask",int(nav.pressedMask)}};
+                {"input_focused",nav.focusedNow},{"input_fallback",nav.usingFallback},{"input_pressed_mask",int(nav.pressedMask)},
+                {"model_button",QString::fromStdString(modelButton)},{"model_button_presses",double(modelButtonPresses)}};
+            status["model_pointer_clicks"]=double(modelPointerClicks);status["model_hover"]=QString::fromStdString(hoveredModelButton);
+            status["model_hit_x"]=lastModelHit[0];status["model_hit_y"]=lastModelHit[1];
+#ifdef SONIC_ARCHIVE_PLAYER
+            status["player_input_mask"]=int(game.deliveredKeys.load());status["player_input_events"]=int(game.deliveredEvents.load());
+            status["player_ready"]=game.loaded();status["player_frames"]=double(game.ticks.load());status["audio_recently_audible"]=bool(game.audioPeak.load());
+            status.remove("emulator_ticks");status.remove("rom_loaded");status.remove("audio_peak");status.remove("audio_samples");
+#endif
             std::ofstream f(data+"/runtime.json.next");f<<QJsonDocument(status).toJson().constData();f.close();
             if(f){std::error_code ec;fs::rename(data+"/runtime.json.next",data+"/runtime.json",ec);}
         }
@@ -125,8 +140,16 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
                 }else{VRControllerState_t state{};if(VRSystem()->GetControllerState(grab.controller,&state,sizeof(state))&&!(state.ulButtonPressed&ButtonMaskFromId(k_EButton_SteamVR_Trigger)))release();}
             }
         }
+        if(modelButtonController<k_unMaxTrackedDeviceCount){
+            if(!poses[0].bPoseIsValid||!poses[modelButtonController].bPoseIsValid)clearModelButton();
+            // Overlay mouse-up is authoritative. The render-model trigger has
+            // a different press threshold and can report released during clicks.
+        }
         while(ov->PollNextOverlayEvent(device,&e,sizeof(e))){
             if(dockResetEvent(e.eventType)){toDock();continue;}
+            if(e.eventType==VREvent_FocusLeave)clearModelButton();
+            if(e.eventType==VREvent_MouseButtonUp&&e.data.mouse.button==VRMouseButton_Left&&
+                (e.trackedDeviceIndex==modelButtonController||e.trackedDeviceIndex==k_unTrackedDeviceIndexInvalid||e.trackedDeviceIndex==0))clearModelButton();
             if(e.eventType==VREvent_ScrollSmooth&&grab.active){
                 // Stick input is routed through ControllerNav, including its raw
                 // Frame fallback. Scroll must not also change placement.
@@ -142,9 +165,14 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
             M inv=inverse(lastModel);V a=mul(point(inv,origin),1/lastSize),b=mul(point(inv,target),1/lastSize),delta=sub(b,a);
             if(fabsf(delta[2])<.0001f)continue;float t=(ScreenZ-a[2])/delta[2];if(t<0)continue;V hit=add(a,mul(delta,t));
             bool front=a[2]>ScreenZ;pointer=index;overHandle=onGrabHandle(hit);
-            if(e.eventType!=VREvent_MouseButtonDown)continue;
             auto button=buttonRay(a,delta);
-            if(!button.empty()){game.press(QString::fromStdString(button));game.save();ov->TriggerLaserMouseHapticVibration(device,.025f,80,.18f);continue;}
+            hoveredModelButton=button;lastModelHit=hit;
+            if(e.eventType==VREvent_MouseMove){
+                if(index==modelButtonController&&button!=modelButton)clearModelButton();
+                continue;
+            }
+            ++modelPointerClicks;
+            if(!button.empty()){clearModelButton();modelButtonController=index;modelButton=button;++modelButtonPresses;game.modelDown(QString::fromStdString(button));ov->TriggerLaserMouseHapticVibration(device,.025f,80,.18f);continue;}
             if(grab.active||(front&&onGameScreen(hit)))continue;
             if(overHandle||onPhoneBody(hit)){
                 V grabbed=point(lastModel,mul(hit,lastSize));
@@ -201,7 +229,7 @@ static int runVR(Emulator& game,Renderer& renderer,const std::string& package,co
                 V eyes[2];for(int i=0;i<2;i++)eyes[i]=point(mm(head,fromvr(VRSystem()->GetEyeToHeadTransform((EVREye)i))),{0,0,0});renderer.draw(plane,model,eyes[0],eyes[1],width,effective,false);glFinish();Texture_t texture{(void*)(uintptr_t)renderer.tex,TextureType_OpenGL,ColorSpace_Gamma};check(ov->SetOverlayTexture(device,&texture));check(ov->SetOverlayWidthInMeters(device,width));auto transform=magicshelfTransform(plane);check(ov->SetOverlayTransformAbsolute(device,TrackingUniverseStanding,&transform));check(ov->ShowOverlay(device));lastPlane=plane;lastModel=model;lastSize=effective;lastWidth=width;
             }else ov->HideOverlay(device);
         }else ov->HideOverlay(device);
-        if(!ready){std::string pid=std::to_string(getpid());if(ftruncate(lock,0)||pwrite(lock,pid.data(),pid.size(),0)!=ssize_t(pid.size()))throw std::runtime_error("Cannot record instance PID");game.save();if(getenv("MAGICSHELF_SESSION"))magicshelfReady();ready=true;std::cerr<<"Sonic Tiger LCD ready (native SM511 emulation)\n";}
+        if(!ready){std::string pid=std::to_string(getpid());if(ftruncate(lock,0)||pwrite(lock,pid.data(),pid.size(),0)!=ssize_t(pid.size()))throw std::runtime_error("Cannot record instance PID");game.save();if(getenv("MAGICSHELF_SESSION"))magicshelfReady();ready=true;std::cerr<<"Sonic Tiger LCD creation ready\n";}
         // Sample dock/head/controller transforms at the runtime frame boundary,
         // rather than drifting through a fixed sleep plus render time.
         frameSync=ov->WaitFrameSync(20)==VROverlayError_None;

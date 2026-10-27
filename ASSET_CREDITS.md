@@ -7,3 +7,5 @@ Modifications: converted to MagicShelf mesh, scaled to 140 mm width, removed two
 CPU: LCD-Game-Emulator by bzhxx, pinned in emulator.lock.json; SM5xx implementation by hap, derived from MAME, BSD-3-Clause headers retained. System/save glue GPL-3.0-or-later; combined application GPL-3.0-or-later. Sonic host wiring, rendering and runtime adapters added here. SDK and reused creation shell MIT, see SDK-LICENSE.txt. OpenVR: OPENVR-LICENSE.txt.
 
 User-supplied n71.program, n71.melody, tsonic.svg and generated segment images are private local content, excluded from public commits and release packages. Sega/Tiger game material is not relicensed by this project.
+
+Online backend (0.2.0): Internet Archive hosted Emularity/MAME, https://archive.org/details/hh_tsonic and https://archive.org/embed/hh_tsonic. Emularity source: https://github.com/db48x/emularity (GPL-3.0). The official embed fetches player/emulator/game content; none is packaged here. The retained bzhxx native backend is a development reference, not the online executable. Qt WebEngine is dynamically linked; Chromium remains sandboxed.
