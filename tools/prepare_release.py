@@ -67,7 +67,7 @@ checks={'version':version,'architecture':meta['architecture'],'package':archive.
  'package_bytes':archive.stat().st_size,'package_files':len(names),'screenshots':screens,
  'manifest_and_catalog_valid':True,'no_rom_or_private_content':True,'packaged_images_match_release_assets':True,
  'framework_patch_base':json.loads((base/'provenance.json').read_text()),
- 'publication_state':'prepared locally; repository, release and catalog not published',
+ 'publication_state':'verified release artifacts; source and release are published independently of the framework catalog',
  'physical_validation':'User confirmed 3D ON/START, visible handheld and native audio. Remaining individual controls and shake/snap need full headset confirmation.'}
 (release/'CHECKS.json').write_text(json.dumps(checks,indent=2)+'\n')
 print(json.dumps(checks,indent=2))

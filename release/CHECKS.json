@@ -2,8 +2,8 @@
   "version": "0.2.3",
   "architecture": "aarch64",
   "package": "sonic-tiger-0.2.3-linux-aarch64.magicshelf",
-  "package_sha256": "6b7a370f8cf0145077a91ad8f51fe9060b2e7407c45eb95864582785e8c9f9f4",
-  "package_bytes": 2917706,
+  "package_sha256": "a77244da9ca235a43d5a0eca0133527a6666e69989f0d6dbe81264787421cd09",
+  "package_bytes": 2917719,
   "package_files": 21,
   "screenshots": [
     {
@@ -40,6 +40,6 @@
     "catalog_blob": "e099601655a271faa63d0f561a68efc17294bbd3",
     "collections_blob": "38265d13dcaeb6b5e3f459ae0d09f4b0cb78c476"
   },
-  "publication_state": "prepared locally; repository, release and catalog not published",
+  "publication_state": "verified release artifacts; source and release are published independently of the framework catalog",
   "physical_validation": "User confirmed 3D ON/START, visible handheld and native audio. Remaining individual controls and shake/snap need full headset confirmation."
 }

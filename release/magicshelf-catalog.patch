@@ -129,8 +129,8 @@
 +        }
 +      ],
 +      "url": "https://github.com/josethevrtech/magicshelf-sonic-tiger/releases/download/v0.2.3/sonic-tiger-0.2.3-linux-aarch64.magicshelf",
-+      "sha256": "6b7a370f8cf0145077a91ad8f51fe9060b2e7407c45eb95864582785e8c9f9f4",
-+      "size_bytes": 2917706,
++      "sha256": "a77244da9ca235a43d5a0eca0133527a6666e69989f0d6dbe81264787421cd09",
++      "size_bytes": 2917719,
 +      "collection_url": "https://github.com/josethevrtech/magicshelf-sonic-tiger/releases/latest/download/catalog.json"
      }
    ]

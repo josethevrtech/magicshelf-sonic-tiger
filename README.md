@@ -40,4 +40,4 @@ The sandboxed browser runs separately from VR tracking, with memory-only HTTP ca
 
 Screenshots are real native renders using a completed frame from the actual online player and the actual settings UI. [Capture provenance and image credits](media/README.md). [Validation details](FIDELITY.md).
 
-**Publication preparation only:** see [release review](release/RELEASE_REVIEW.md). No public repository, release or MagicShelf catalog change has been published by this preparation.
+[Download the release](https://github.com/josethevrtech/magicshelf-sonic-tiger/releases/latest) or follow its catalog in MagicShelf: https://github.com/josethevrtech/magicshelf-sonic-tiger/releases/latest/download/catalog.json . See the [release review](release/RELEASE_REVIEW.md) for validation and remaining limits.

@@ -1,6 +1,6 @@
 # Publication review: Sonic Tiger LCD v0.2.3
 
-Prepared locally; not published. The running headset installation remains v0.2.2.
+Release artifacts and checks for v0.2.3. The existing private headset installation remains v0.2.2 until updated.
 
 ## Listing and screenshots
 
@@ -26,6 +26,6 @@ The online player needs Archive.org at launch and follows its availability. Onli
 
 ## Publication boundary
 
-No new GitHub repository, tag, release, catalog entry or collection subscription was created during preparation. The proposed catalog/collections patch is stored in [magicshelf-catalog.patch](magicshelf-catalog.patch), based on the exact public revision in framework-base/provenance.json. Apply it only after the real release URLs are live and checked.
+The source is published in josethevrtech/magicshelf-sonic-tiger. The release assets are uploaded separately from the MagicShelf catalog change. The proposed catalog/collections patch is stored in [magicshelf-catalog.patch](magicshelf-catalog.patch), based on the exact public revision in framework-base/provenance.json. Apply it only after the real release URLs are live and checked.
 
-[Publication steps](PUBLISH.md) cover source creation, release uploads, URL checks and the final MagicShelf catalog change. The repository, source/issues links and screenshot URLs in this candidate become live when published; they are intentionally not presented as already available.
+[Publication steps](PUBLISH.md) cover source creation, release uploads, URL checks and the final MagicShelf catalog change. The repository, source/issues links and screenshot URLs in this candidate become live when published; verify them against the matching GitHub release before applying the catalog patch.
